@@ -11,6 +11,7 @@ public class GameLogic : MonoBehaviour {
 
 	private GameObject currentlySelected;
 	private int turnbabyturn;
+	private GameObject previewtrack;
 	
 	// Use this for initialization
 	void Start () {
@@ -18,8 +19,6 @@ public class GameLogic : MonoBehaviour {
         {
             map[(int)g.transform.position.x, (int)g.transform.position.y] = g.GetComponent<Track>();
         }
-
-        currentlySelected = leftTrack;
 	}
 
 	// Update is called once per frame
@@ -27,23 +26,56 @@ public class GameLogic : MonoBehaviour {
 		Vector3 clickpos = c.ScreenToWorldPoint(Input.mousePosition);
 		int le_x = (int)Mathf.Floor (clickpos.x);
 		int le_y = (int)Mathf.Floor (clickpos.y);
-		if(Input.GetButtonDown("GOLEFT")){
+		if (Input.GetButtonDown ("GOLEFT")) {
 			currentlySelected = leftTrack;
-		}
-		else if(Input.GetButtonDown("GOSTRAIGHT")){
+			if(previewtrack){
+				Destroy(previewtrack);
+			}
+			previewtrack = Instantiate (currentlySelected, new Vector3 (le_x, le_y, 0), Quaternion.Euler (new Vector3 (0, 0, turnbabyturn))) as GameObject;
+			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer>();
+			sr.color = new Color(1,1,1,0.2f);
+		} else if (Input.GetButtonDown ("GOSTRAIGHT")) {
 			currentlySelected = straightTrack;
-		}
-		else if(Input.GetButtonDown("GORIGHT")){
+			if(previewtrack){
+				Destroy(previewtrack);
+			}
+			previewtrack = Instantiate (currentlySelected, new Vector3 (le_x, le_y, 0), Quaternion.Euler (new Vector3 (0, 0, turnbabyturn))) as GameObject;
+			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer>();
+			sr.color = new Color(1,1,1,0.2f);
+		} else if (Input.GetButtonDown ("GORIGHT")) {
 			currentlySelected = rightTrack;
+			if(previewtrack){
+				Destroy(previewtrack);
+			}
+			previewtrack = Instantiate (currentlySelected, new Vector3 (le_x, le_y, 0), Quaternion.Euler (new Vector3 (0, 0, turnbabyturn))) as GameObject;
+			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer>();
+			sr.color = new Color(1,1,1,0.2f);
 		}
 
 		if (Input.GetButtonDown ("ROTAETLEFT")) {
 			turnbabyturn += 90;
+			if(previewtrack){
+				Destroy(previewtrack);
+			}
+			previewtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.Euler (new Vector3(0,0,turnbabyturn))) as GameObject;
+			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer>();
+			sr.color = new Color(1,1,1,0.2f);
 		} else if (Input.GetButtonDown ("ROTAETRIGHT")) {
 			turnbabyturn -= 90;
+			if(previewtrack){
+				Destroy(previewtrack);
+			}
+			previewtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.Euler (new Vector3(0,0,turnbabyturn))) as GameObject;
+			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer>();
+			sr.color = new Color(1,1,1,0.2f);
 		}
 
-		if(Input.GetButtonDown("PLACE")){
+		if(previewtrack){
+			Vector3 hello = new Vector3(le_x,le_y,0);
+			previewtrack.transform.position = hello;
+		}
+
+		if(Input.GetButtonDown("PLACE") && currentlySelected != null){
 			GameObject newtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.Euler (new Vector3(0,0,turnbabyturn))) as GameObject;
 			map[le_x, le_y] = newtrack.GetComponent<Track>();
 		}
