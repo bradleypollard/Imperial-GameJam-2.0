@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameLogic : MonoBehaviour {
 
-    public Track[,] map = new Track[10,10];
+    public Track[,] map = new Track[20,20];
 	public Camera c;
 	public GameObject straightTrack;
 	public GameObject leftTrack;
