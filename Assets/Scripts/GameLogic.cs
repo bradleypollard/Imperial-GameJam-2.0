@@ -25,13 +25,17 @@ public class GameLogic : MonoBehaviour {
 		Vector3 clickpos = c.ScreenToWorldPoint(Input.mousePosition);
 		int le_x = (int)Mathf.Floor (clickpos.x);
 		int le_y = (int)Mathf.Floor (clickpos.y);
-		if(Input.GetButtonDown("GOLEFT")){
+
+		if (Input.GetButtonDown("GOLEFT"))
+        {
 			currentlySelected = leftTrack;
 		}
-		else if(Input.GetButtonDown("GOSTRAIGHT")){
+		else if (Input.GetButtonDown("GOSTRAIGHT"))
+        {
 			currentlySelected = straightTrack;
 		}
-		else if(Input.GetButtonDown("GORIGHT")){
+		else if (Input.GetButtonDown("GORIGHT"))
+        {
 			currentlySelected = rightTrack;
 		}
 
