@@ -41,9 +41,9 @@ public class TrainWheels : MonoBehaviour {
             startTime = Time.time;
         }
 
-        
 
-        if (currentTrack.type == Track.TrackType.Corner)
+
+        if (currentTrack.type == Track.TrackType.Right || currentTrack.type == Track.TrackType.Left)
         {
             int trackRot = (int)currentTrack.transform.rotation.eulerAngles.z;
 

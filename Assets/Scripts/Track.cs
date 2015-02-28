@@ -7,7 +7,8 @@ public class Track : MonoBehaviour {
     public enum TrackType
     {
         Straight,
-        Corner
+        Right,
+        Left
     }
     public TrackType type;
 
@@ -16,11 +17,8 @@ public class Track : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        if (type == TrackType.Corner)
+        if (type == TrackType.Right)
         {
-            EndPoint = new Vector2(2,2);
-            EndRotation = -90;
-
             int youspinmerightround = (int)transform.rotation.eulerAngles.z;
 
             if (youspinmerightround == 270)
@@ -35,6 +33,24 @@ public class Track : MonoBehaviour {
             else if (youspinmerightround == 90)
             {
                 EndPoint.x = -EndPoint.x;
+            }
+        }
+        else if (type == TrackType.Left)
+        {
+            int youspinmerightround = (int)transform.rotation.eulerAngles.z;
+
+            if (youspinmerightround == 270)
+            {
+                EndPoint.x = -EndPoint.x;
+            }
+            else if (youspinmerightround == 180)
+            {
+                EndPoint.x = -EndPoint.x;
+                EndPoint.y = -EndPoint.y;
+            }
+            else if (youspinmerightround == 90)
+            {
+                EndPoint.y = -EndPoint.y;
             }
         }
         else if (type == TrackType.Straight)
