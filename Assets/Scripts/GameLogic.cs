@@ -5,7 +5,10 @@ public class GameLogic : MonoBehaviour {
 
     public Track[,] map = new Track[10,10];
 	public Camera c;
-	public GameObject track;
+	public GameObject straightTrack;
+	public GameObject leftTrack;
+	public GameObject rightTrack;
+	private GameObject currentlySelected;
 	
 	// Use this for initialization
 	void Start () {
@@ -17,11 +20,24 @@ public class GameLogic : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Fire1")){
-			Vector3 clickpos = c.ScreenToWorldPoint(Input.mousePosition);
-			Debug.Log("x is: " + clickpos.x + " and y is:" + clickpos.y);
-			GameObject newtrack = Instantiate(track, new Vector3(Mathf.Floor(clickpos.x), Mathf.Floor(clickpos.y), 0), Quaternion.identity) as GameObject;
-			//TODO: PUT DOWN SOME TRACK
+		Vector3 clickpos = c.ScreenToWorldPoint(Input.mousePosition);
+		int le_x = Mathf.Floor (clickpos.x);
+		int le_y = Mathf.Floor (clickpos.y);
+		if(Input.GetButtonDown("GOLEFT")){
+			currentlySelected = leftTrack;
+		}
+		else if(Input.GetButtonDown("GOSTRAIGHT")){
+			currentlySelected = straightTrack;
+		}
+		else if(Input.GetButtonDown("GORIGHT")){
+			currentlySelected = rightTrack;
+		}
+
+		//TODO: ROTAET
+
+		if(Input.GetButtonDown("PLACE")){
+			GameObject newtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.identity) as GameObject;
+			map[le_x, le_y] = newtrack.GetComponent<leftTrack>();
 		}
 	}
 }
