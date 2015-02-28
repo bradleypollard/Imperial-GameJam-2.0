@@ -28,29 +28,34 @@ public class GameLogic : MonoBehaviour {
 		int le_y = (int)Mathf.Floor (clickpos.y);
 		if (Input.GetButtonDown ("GOLEFT")) {
 			currentlySelected = leftTrack;
-			if(previewtrack){
-				Destroy(previewtrack);
+			if (previewtrack) {
+				Destroy (previewtrack);
 			}
 			previewtrack = Instantiate (currentlySelected, new Vector3 (le_x, le_y, 0), Quaternion.Euler (new Vector3 (0, 0, turnbabyturn))) as GameObject;
-			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer>();
-			sr.color = new Color(1,1,1,0.2f);
+			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer> ();
+			sr.color = new Color (1, 1, 1, 0.2f);
 		} else if (Input.GetButtonDown ("GOSTRAIGHT")) {
 			currentlySelected = straightTrack;
-			if(previewtrack){
-				Destroy(previewtrack);
+			if (previewtrack) {
+				Destroy (previewtrack);
 			}
 			previewtrack = Instantiate (currentlySelected, new Vector3 (le_x, le_y, 0), Quaternion.Euler (new Vector3 (0, 0, turnbabyturn))) as GameObject;
-			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer>();
-			sr.color = new Color(1,1,1,0.2f);
+			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer> ();
+			sr.color = new Color (1, 1, 1, 0.2f);
 		} else if (Input.GetButtonDown ("GORIGHT")) {
 			currentlySelected = rightTrack;
+			if (previewtrack) {
+				Destroy (previewtrack);
+			}
+			previewtrack = Instantiate (currentlySelected, new Vector3 (le_x, le_y, 0), Quaternion.Euler (new Vector3 (0, 0, turnbabyturn))) as GameObject;
+			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer> ();
+			sr.color = new Color (1, 1, 1, 0.2f);
+		} else if (Input.GetButtonDown ("STOPGHOST")) {
 			if(previewtrack){
 				Destroy(previewtrack);
 			}
-			previewtrack = Instantiate (currentlySelected, new Vector3 (le_x, le_y, 0), Quaternion.Euler (new Vector3 (0, 0, turnbabyturn))) as GameObject;
-			SpriteRenderer sr = previewtrack.GetComponent<SpriteRenderer>();
-			sr.color = new Color(1,1,1,0.2f);
 		}
+	
 
 		if (Input.GetButtonDown ("ROTAETLEFT")) {
 			turnbabyturn += 90;
