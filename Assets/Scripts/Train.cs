@@ -16,11 +16,11 @@ public class Train : MonoBehaviour {
         transform.position = (front.transform.position + back.transform.position) / 2;
 
         // calc angle
-        float diffx = front.transform.position.x - back.transform.position.x;
-        float diffy = front.transform.position.y - back.transform.position.y;
+        float dx = front.transform.position.x - back.transform.position.x;
+        float dy = front.transform.position.y - back.transform.position.y;
 
         float ang = 0;
-        ang = Mathf.Tan(Mathf.Abs(diffx) / Mathf.Abs(diffy));
-        transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * ang);
+        ang = Mathf.Atan2(dy, dx);
+        transform.rotation = Quaternion.Euler(0, 0, -Mathf.Rad2Deg * (2.5f * Mathf.PI - ang));
 	}
 }
