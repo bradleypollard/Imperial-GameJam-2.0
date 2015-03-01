@@ -18,6 +18,8 @@ public class Track : MonoBehaviour
   }
 
   public TrackType type;
+  public Sprite splitStraight;
+  public Sprite splitTurn;
 
   private Vector2 endPoint;
   private float endRotation;
@@ -128,6 +130,40 @@ public class Track : MonoBehaviour
   public TrackSplitMode GetMode()
   {
     return mode;
+  }
+
+  public void SwitchMode()
+  {
+    if (mode == TrackSplitMode.Straight)
+    {
+      mode = TrackSplitMode.Turn;
+      GetComponent<SpriteRenderer>().sprite = splitStraight;
+
+      if (type == TrackType.SplitRight)
+      {
+        endPoint = new Vector2(2, 2);
+        endRotation = -90;
+
+        GenerateRightEndPoint();
+      }
+      else if (type == TrackType.SplitLeft)
+      {
+        endPoint = new Vector2(-1, 1);
+        endRotation = 90;
+
+        GenerateLeftEndPoint();
+      }
+    }
+    else
+    {
+      mode = TrackSplitMode.Straight;
+      GetComponent<SpriteRenderer>().sprite = splitTurn;
+
+      endPoint = new Vector2(0, 2);
+      endRotation = 0;
+
+      GenerateStraightEndPoint();
+    }
   }
 
   public bool IsTurn()

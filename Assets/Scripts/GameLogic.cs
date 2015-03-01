@@ -50,6 +50,8 @@ public class GameLogic : MonoBehaviour
       if (previewtrack)
       {
         Destroy(previewtrack);
+        previewtrack = null;
+        currentlySelected = null;
       }
     }
 
@@ -70,10 +72,21 @@ public class GameLogic : MonoBehaviour
       previewtrack.transform.position = hello;
     }
 
-    if (Input.GetButtonDown("PLACE") && currentlySelected != null)
+    if (Input.GetButtonDown("PLACE"))
     {
-      GameObject newtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.Euler(new Vector3(0, 0, turnbabyturn))) as GameObject;
-      map[le_x, le_y] = newtrack.GetComponent<Track>();
+      if (currentlySelected != null)
+      {
+        GameObject newtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.Euler(new Vector3(0, 0, turnbabyturn))) as GameObject;
+        map[le_x, le_y] = newtrack.GetComponent<Track>();
+      }
+      else
+      {
+        Track underMouse = map[le_x, le_y];
+        if (underMouse != null && (underMouse.type == Track.TrackType.SplitLeft || underMouse.type == Track.TrackType.SplitRight))
+        {
+          underMouse.SwitchMode();
+        }
+      }
     }
   }
 
