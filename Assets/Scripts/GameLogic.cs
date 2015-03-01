@@ -9,6 +9,7 @@ public class GameLogic : MonoBehaviour
   public GameObject straightTrack;
   public GameObject leftTrack;
   public GameObject rightTrack;
+  public GameObject stationPiece;
 
   private GameObject currentlySelected;
   private int turnbabyturn;
@@ -43,6 +44,11 @@ public class GameLogic : MonoBehaviour
     else if (Input.GetButtonDown("GORIGHT"))
     {
       currentlySelected = rightTrack;
+      GeneratePreview(le_x, le_y);
+    }
+    else if (Input.GetButtonDown("STATION"))
+    {
+      currentlySelected = stationPiece;
       GeneratePreview(le_x, le_y);
     }
     else if (Input.GetButtonDown("STOPGHOST"))
@@ -86,7 +92,12 @@ public class GameLogic : MonoBehaviour
         {
           underMouse.SwitchMode();
         }
+        else if (underMouse != null && underMouse.type == Track.TrackType.Station)
+        {
+          //TODO: DROPTRAIN
+        }
       }
+
     }
   }
 

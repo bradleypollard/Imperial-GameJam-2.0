@@ -9,7 +9,8 @@ public class Track : MonoBehaviour
     Right,
     Left,
     SplitRight,
-    SplitLeft
+    SplitLeft,
+    Station
   }
   public enum TrackSplitMode
   {
