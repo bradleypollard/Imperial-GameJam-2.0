@@ -121,7 +121,7 @@ public class GameLogic : MonoBehaviour
       previewtrack.transform.position = hello;
     }
 
-    if (Input.GetButtonDown("PLACE"))
+    if (Input.GetButton("PLACE"))
     {
       if (currentlySelected != null)
       {
@@ -131,7 +131,11 @@ public class GameLogic : MonoBehaviour
           map[le_x, le_y] = newtrack.GetComponent<Track>();
         }
       }
-      else if (le_x >= 0 && le_y >= 0)
+    }
+
+    if (Input.GetButtonDown("PLACE"))
+    {
+      if (le_x >= 0 && le_y >= 0)
       {
         Track underMouse = map[le_x, le_y];
         if (underMouse != null && (underMouse.type == Track.TrackType.SplitLeft || underMouse.type == Track.TrackType.SplitRight))
