@@ -9,6 +9,7 @@ public class GameLogic : MonoBehaviour
   public GameObject straightTrack;
   public GameObject leftTrack;
   public GameObject rightTrack;
+	public GameObject stationpiece;
 
   private GameObject currentlySelected;
   private int turnbabyturn;
@@ -30,28 +31,23 @@ public class GameLogic : MonoBehaviour
     int le_x = (int)Mathf.Floor(clickpos.x);
     int le_y = (int)Mathf.Floor(clickpos.y);
 
-    if (Input.GetButtonDown("GOLEFT"))
-    {
-      currentlySelected = leftTrack;
-      GeneratePreview(le_x, le_y);
-    }
-    else if (Input.GetButtonDown("GOSTRAIGHT"))
-    {
-      currentlySelected = straightTrack;
-      GeneratePreview(le_x, le_y);
-    }
-    else if (Input.GetButtonDown("GORIGHT"))
-    {
-      currentlySelected = rightTrack;
-      GeneratePreview(le_x, le_y);
-    }
-    else if (Input.GetButtonDown("STOPGHOST"))
-    {
-      if (previewtrack)
-      {
-        Destroy(previewtrack);
-      }
-    }
+    if (Input.GetButtonDown ("GOLEFT")) {
+			currentlySelected = leftTrack;
+			GeneratePreview (le_x, le_y);
+		} else if (Input.GetButtonDown ("GOSTRAIGHT")) {
+			currentlySelected = straightTrack;
+			GeneratePreview (le_x, le_y);
+		} else if (Input.GetButtonDown ("GORIGHT")) {
+			currentlySelected = rightTrack;
+			GeneratePreview (le_x, le_y);
+		} else if (Input.GetButtonDown ("STOPGHOST")) {
+			if (previewtrack) {
+				Destroy (previewtrack);
+			}
+		} else if (Input.GetButtonDown ("STATION")) {
+			currentlySelected = stationpiece;
+			GeneratePreview(le_x, le_y);
+		}
 
     if (Input.GetButtonDown("ROTAETLEFT"))
     {
@@ -74,6 +70,10 @@ public class GameLogic : MonoBehaviour
     {
       GameObject newtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.Euler(new Vector3(0, 0, turnbabyturn))) as GameObject;
       map[le_x, le_y] = newtrack.GetComponent<Track>();
+
+			if(currentlySelected == stationpiece){
+				//TODO: DROPTRAIN
+			}
     }
   }
 
