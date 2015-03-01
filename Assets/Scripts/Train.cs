@@ -10,8 +10,8 @@ public class Train : MonoBehaviour
   // Use this for initialization
   void Start()
   {
-		front.train = this;
-		back.train = this;
+    front.train = this;
+    back.train = this;
   }
 
   // Update is called once per frame
