@@ -178,4 +178,8 @@ public class Track : MonoBehaviour
     return (type == Track.TrackType.Straight || (type == Track.TrackType.SplitRight || type == Track.TrackType.SplitLeft)
       && GetMode() == Track.TrackSplitMode.Straight);
   }
+
+	public bool IsStation(){
+		return (type == Track.TrackType.Station);
+	}
 }
