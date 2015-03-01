@@ -53,7 +53,6 @@ public class GameLogic : MonoBehaviour
       }
     }
 
-
     if (Input.GetButtonDown("ROTAETLEFT"))
     {
       turnbabyturn += 90;

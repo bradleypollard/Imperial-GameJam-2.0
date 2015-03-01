@@ -8,8 +8,6 @@ public class TrainWheels : MonoBehaviour
 
   private Vector2 start;
   private Vector2 end;
-  private Vector3 startRot;
-  private Vector3 endRot;
 
   private float startTime;
   private float journeyLength;
@@ -29,44 +27,38 @@ public class TrainWheels : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-
     if (!currentTrack)
     {
       currentTrack = gl.map[x, y];
 
       start = (Vector2)transform.position;
-      end = (Vector2)transform.position + currentTrack.EndPoint;
+      end = (Vector2)transform.position + currentTrack.GetEndPoint();
 
-      startRot = transform.rotation.eulerAngles;
-      endRot = transform.rotation.eulerAngles + new Vector3(0, 0, currentTrack.EndRotation);
-
-      journeyLength = currentTrack.EndPoint.magnitude;
+      journeyLength = currentTrack.GetEndPoint().magnitude;
       startTime = Time.time;
     }
 
-
-
-    if (currentTrack.type == Track.TrackType.Right || currentTrack.type == Track.TrackType.Left)
+    if (currentTrack.IsTurn())
     {
       int trackRot = (int)currentTrack.transform.rotation.eulerAngles.z;
 
       float magicrandabout = 2 * Mathf.PI * 1.5f / 4;
 
-      float rotCovered = (Time.time - startTime) * speed / magicrandabout * currentTrack.EndRotation;
+      float rotCovered = (Time.time - startTime) * speed / magicrandabout * currentTrack.GetEndRotation();
 
       if (trackRot == 90 || trackRot == 270)
       {
-        transform.RotateAround(new Vector3(start.x, end.y, -1), new Vector3(0, 0, 1), Time.deltaTime * speed / magicrandabout * currentTrack.EndRotation);
+        transform.RotateAround(new Vector3(start.x, end.y, -1), new Vector3(0, 0, 1), Time.deltaTime * speed / magicrandabout * currentTrack.GetEndRotation());
       }
       else
       {
-        transform.RotateAround(new Vector3(end.x, start.y, -1), new Vector3(0, 0, 1), Time.deltaTime * speed / magicrandabout * currentTrack.EndRotation);
+        transform.RotateAround(new Vector3(end.x, start.y, -1), new Vector3(0, 0, 1), Time.deltaTime * speed / magicrandabout * currentTrack.GetEndRotation());
       }
 
-      if (Mathf.Abs(rotCovered) >= Mathf.Abs(currentTrack.EndRotation))
+      if (Mathf.Abs(rotCovered) >= Mathf.Abs(currentTrack.GetEndRotation()))
       {
-        x += (int)currentTrack.EndPoint.x;
-        y += (int)currentTrack.EndPoint.y;
+        x += (int)currentTrack.GetEndPoint().x;
+        y += (int)currentTrack.GetEndPoint().y;
 
         transform.rotation = Quaternion.Euler(0, 0, Mathf.Round(transform.rotation.eulerAngles.z / 90) * 90);
         transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), -1);
@@ -74,7 +66,7 @@ public class TrainWheels : MonoBehaviour
         currentTrack = null;
       }
     }
-    else if (currentTrack.type == Track.TrackType.Straight)
+    else if (currentTrack.IsStraight())
     {
       float distCovered = (Time.time - startTime) * speed;
 
@@ -87,16 +79,11 @@ public class TrainWheels : MonoBehaviour
       if (fracJourney >= 1)
       {
 
-        x += (int)currentTrack.EndPoint.x;
-        y += (int)currentTrack.EndPoint.y;
+        x += (int)currentTrack.GetEndPoint().x;
+        y += (int)currentTrack.GetEndPoint().y;
 
         currentTrack = null;
       }
     }
-    //transform.rotation = Quaternion.Euler(Vector3.Lerp( startRot, endRot, fracJourney ));
-
-
-
-
   }
 }
