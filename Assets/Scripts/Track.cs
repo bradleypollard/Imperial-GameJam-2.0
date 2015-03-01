@@ -138,7 +138,7 @@ public class Track : MonoBehaviour
     if (mode == TrackSplitMode.Straight)
     {
       mode = TrackSplitMode.Turn;
-      GetComponent<SpriteRenderer>().sprite = splitStraight;
+      GetComponent<SpriteRenderer>().sprite = splitTurn;
 
       if (type == TrackType.SplitRight)
       {
@@ -158,7 +158,7 @@ public class Track : MonoBehaviour
     else
     {
       mode = TrackSplitMode.Straight;
-      GetComponent<SpriteRenderer>().sprite = splitTurn;
+      GetComponent<SpriteRenderer>().sprite = splitStraight;
 
       endPoint = new Vector2(0, 2);
       endRotation = 0;
