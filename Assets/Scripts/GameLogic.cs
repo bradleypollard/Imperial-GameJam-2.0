@@ -9,7 +9,9 @@ public class GameLogic : MonoBehaviour
   public GameObject straightTrack;
   public GameObject leftTrack;
   public GameObject rightTrack;
-  public GameObject stationPiece;
+  public GameObject stationStart;
+  public GameObject wheels;
+  public GameObject train;
 
   private GameObject currentlySelected;
   private int turnbabyturn;
@@ -48,7 +50,7 @@ public class GameLogic : MonoBehaviour
     }
     else if (Input.GetButtonDown("STATION"))
     {
-      currentlySelected = stationPiece;
+      currentlySelected = stationStart;
       GeneratePreview(le_x, le_y);
     }
     else if (Input.GetButtonDown("STOPGHOST"))
@@ -92,9 +94,24 @@ public class GameLogic : MonoBehaviour
         {
           underMouse.SwitchMode();
         }
-        else if (underMouse != null && underMouse.type == Track.TrackType.Station)
+        else if (underMouse != null && underMouse.type == Track.TrackType.StationStart)
         {
-          //TODO: DROPTRAIN
+          int dx = (int)Mathf.Round(-Mathf.Sin(underMouse.transform.rotation.eulerAngles.z));
+          int dy = (int)Mathf.Round(Mathf.Cos(underMouse.transform.rotation.eulerAngles.z));
+
+          GameObject back = (GameObject)Instantiate(wheels, new Vector3(underMouse.transform.position.x + dx, underMouse.transform.position.y + dy, 0), underMouse.transform.rotation);
+          GameObject front = (GameObject)Instantiate(wheels, new Vector3(underMouse.transform.position.x + 3 * dx, underMouse.transform.position.y + 3 * dy, 0), underMouse.transform.rotation);
+
+          TrainWheels fw = front.GetComponent<TrainWheels>();
+          TrainWheels bw = back.GetComponent<TrainWheels>();
+          fw.gl = this;
+          bw.gl = this;
+
+          GameObject t = (GameObject)Instantiate(train, new Vector3(underMouse.transform.position.x + 2 * dx, underMouse.transform.position.y + 2 * dy, 0), underMouse.transform.rotation);
+          Train tt = t.GetComponent<Train>();
+          tt.front = fw;
+          tt.back = bw;
+
         }
       }
 

@@ -10,7 +10,8 @@ public class Track : MonoBehaviour
     Left,
     SplitRight,
     SplitLeft,
-    Station
+    StationStart,
+    StationStop
   }
   public enum TrackSplitMode
   {
@@ -181,6 +182,6 @@ public class Track : MonoBehaviour
 
   public bool IsStation()
   {
-    return (type == Track.TrackType.Station);
+    return (type == Track.TrackType.StationStop);
   }
 }

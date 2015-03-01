@@ -3,7 +3,6 @@ using System.Collections;
 
 public class TrainWheels : MonoBehaviour
 {
-
   private Track currentTrack;
 
   private Vector2 start;
@@ -21,8 +20,8 @@ public class TrainWheels : MonoBehaviour
   // Use this for initialization
   void Start()
   {
-    x = (int)transform.position.x;
-    y = (int)transform.position.y;
+    x = (int)Mathf.Round(transform.position.x);
+    y = (int)Mathf.Round(transform.position.y);
   }
 
   // Update is called once per frame
