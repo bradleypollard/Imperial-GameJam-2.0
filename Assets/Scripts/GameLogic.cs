@@ -6,12 +6,20 @@ public class GameLogic : MonoBehaviour
 
   public Track[,] map = new Track[20, 20];
   public Camera c;
+
   public GameObject straightTrack;
   public GameObject leftTrack;
   public GameObject rightTrack;
   public GameObject stationStart;
+  public GameObject stationStop;
+  public GameObject splitRight;
+  public GameObject splitLeft;
+  public GameObject driftRight;
+  public GameObject driftLeft;
+
   public GameObject wheels;
   public GameObject train;
+
 
   private GameObject currentlySelected;
   private int turnbabyturn;
@@ -48,9 +56,34 @@ public class GameLogic : MonoBehaviour
       currentlySelected = rightTrack;
       GeneratePreview(le_x, le_y);
     }
-    else if (Input.GetButtonDown("STATION"))
+    else if (Input.GetButtonDown("STARTSTATION"))
     {
       currentlySelected = stationStart;
+      GeneratePreview(le_x, le_y);
+    }
+    else if (Input.GetButtonDown("STOPSTATION"))
+    {
+      currentlySelected = stationStop;
+      GeneratePreview(le_x, le_y);
+    }
+    else if (Input.GetButtonDown("SPLITRIGHT"))
+    {
+      currentlySelected = splitRight;
+      GeneratePreview(le_x, le_y);
+    }
+    else if (Input.GetButtonDown("SPLITLEFT"))
+    {
+      currentlySelected = splitLeft;
+      GeneratePreview(le_x, le_y);
+    }
+    else if (Input.GetButtonDown("DRIFTRIGHT"))
+    {
+      currentlySelected = driftRight;
+      GeneratePreview(le_x, le_y);
+    }
+    else if (Input.GetButtonDown("DRIFTLEFT"))
+    {
+      currentlySelected = driftLeft;
       GeneratePreview(le_x, le_y);
     }
     else if (Input.GetButtonDown("STOPGHOST"))
@@ -87,17 +120,21 @@ public class GameLogic : MonoBehaviour
         GameObject newtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.Euler(new Vector3(0, 0, turnbabyturn))) as GameObject;
         map[le_x, le_y] = newtrack.GetComponent<Track>();
       }
-      else
+      else if (le_x >= 0 && le_y >= 0)
       {
         Track underMouse = map[le_x, le_y];
         if (underMouse != null && (underMouse.type == Track.TrackType.SplitLeft || underMouse.type == Track.TrackType.SplitRight))
         {
-          underMouse.SwitchMode();
+          underMouse.SwitchSplitMode();
+        }
+        else if (underMouse != null && (underMouse.type == Track.TrackType.DriftLeft || underMouse.type == Track.TrackType.DriftRight))
+        {
+          underMouse.SwitchDriftMode();
         }
         else if (underMouse != null && underMouse.type == Track.TrackType.StationStart)
         {
-          int dx = (int)Mathf.Round(-Mathf.Sin(underMouse.transform.rotation.eulerAngles.z));
-          int dy = (int)Mathf.Round(Mathf.Cos(underMouse.transform.rotation.eulerAngles.z));
+          int dx = (int)Mathf.Round(-Mathf.Sin(Mathf.Deg2Rad * underMouse.transform.rotation.eulerAngles.z));
+          int dy = (int)Mathf.Round(Mathf.Cos(Mathf.Deg2Rad * underMouse.transform.rotation.eulerAngles.z));
 
           GameObject back = (GameObject)Instantiate(wheels, new Vector3(underMouse.transform.position.x + dx, underMouse.transform.position.y + dy, 0), underMouse.transform.rotation);
           GameObject front = (GameObject)Instantiate(wheels, new Vector3(underMouse.transform.position.x + 3 * dx, underMouse.transform.position.y + 3 * dy, 0), underMouse.transform.rotation);

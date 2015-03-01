@@ -10,29 +10,31 @@ public class Track : MonoBehaviour
     Left,
     SplitRight,
     SplitLeft,
+    DriftRight,
+    DriftLeft,
     StationStart,
     StationStop
   }
-  public enum TrackSplitMode
+  public enum TrackMode
   {
     Straight,
     Turn
   }
 
   public TrackType type;
-  public Sprite splitStraight;
-  public Sprite splitTurn;
+  public Sprite spriteStraight;
+  public Sprite spriteTurn;
 
   private Vector2 endPoint;
   private float endRotation;
-  private TrackSplitMode mode;
+  private TrackMode mode;
 
   // Use this for initialization
   void Start()
   {
     if (type == TrackType.SplitRight)
     {
-      mode = TrackSplitMode.Straight;
+      mode = TrackMode.Straight;
       endPoint = new Vector2(0, 2);
       endRotation = 0;
 
@@ -40,7 +42,23 @@ public class Track : MonoBehaviour
     }
     else if (type == TrackType.SplitLeft)
     {
-      mode = TrackSplitMode.Straight;
+      mode = TrackMode.Straight;
+      endPoint = new Vector2(0, 2);
+      endRotation = 0;
+
+      GenerateStraightEndPoint();
+    }
+    else if (type == TrackType.DriftRight)
+    {
+      mode = TrackMode.Straight;
+      endPoint = new Vector2(0, 2);
+      endRotation = 0;
+
+      GenerateStraightEndPoint();
+    }
+    else if (type == TrackType.DriftLeft)
+    {
+      mode = TrackMode.Straight;
       endPoint = new Vector2(0, 2);
       endRotation = 0;
 
@@ -113,6 +131,52 @@ public class Track : MonoBehaviour
     }
   }
 
+  private void GenerateDriftRightEndPoint()
+  {
+    int youspinmerightround = (int)Mathf.Round(transform.rotation.eulerAngles.z);
+
+    if (youspinmerightround == 270)
+    {
+      float temp = endPoint.x;
+      endPoint.x = endPoint.y;
+      endPoint.y = -temp;
+    }
+    else if (youspinmerightround == 180)
+    {
+      endPoint.x = -endPoint.x;
+      endPoint.y = -endPoint.y;
+    }
+    else if (youspinmerightround == 90)
+    {
+      float temp = endPoint.x;
+      endPoint.x = -endPoint.y;
+      endPoint.y = temp;
+    }
+  }
+
+  private void GenerateDriftLeftEndPoint()
+  {
+    int youspinmerightround = (int)Mathf.Round(transform.rotation.eulerAngles.z);
+
+    if (youspinmerightround == 270)
+    {
+      float temp = endPoint.x;
+      endPoint.x = endPoint.y;
+      endPoint.y = -temp;
+    }
+    else if (youspinmerightround == 180)
+    {
+      endPoint.x = -endPoint.x;
+      endPoint.y = -endPoint.y;
+    }
+    else if (youspinmerightround == 90)
+    {
+      float temp = endPoint.x;
+      endPoint.x = -endPoint.y;
+      endPoint.y = temp;
+    }
+  }
+
   // Update is called once per frame
   void Update()
   {
@@ -129,17 +193,17 @@ public class Track : MonoBehaviour
     return endRotation;
   }
 
-  public TrackSplitMode GetMode()
+  public TrackMode GetMode()
   {
     return mode;
   }
 
-  public void SwitchMode()
+  public void SwitchSplitMode()
   {
-    if (mode == TrackSplitMode.Straight)
+    if (mode == TrackMode.Straight)
     {
-      mode = TrackSplitMode.Turn;
-      GetComponent<SpriteRenderer>().sprite = splitTurn;
+      mode = TrackMode.Turn;
+      GetComponent<SpriteRenderer>().sprite = spriteTurn;
 
       if (type == TrackType.SplitRight)
       {
@@ -158,8 +222,42 @@ public class Track : MonoBehaviour
     }
     else
     {
-      mode = TrackSplitMode.Straight;
-      GetComponent<SpriteRenderer>().sprite = splitStraight;
+      mode = TrackMode.Straight;
+      GetComponent<SpriteRenderer>().sprite = spriteStraight;
+
+      endPoint = new Vector2(0, 2);
+      endRotation = 0;
+
+      GenerateStraightEndPoint();
+    }
+  }
+
+  public void SwitchDriftMode()
+  {
+    if (mode == TrackMode.Straight)
+    {
+      mode = TrackMode.Turn;
+      GetComponent<SpriteRenderer>().sprite = spriteTurn;
+
+      if (type == TrackType.DriftRight)
+      {
+        endPoint = new Vector2(1, 2);
+        endRotation = 0;
+
+        GenerateDriftRightEndPoint();
+      }
+      else if (type == TrackType.DriftLeft)
+      {
+        endPoint = new Vector2(-1, 2);
+        endRotation = 0;
+
+        GenerateDriftLeftEndPoint();
+      }
+    }
+    else
+    {
+      mode = TrackMode.Straight;
+      GetComponent<SpriteRenderer>().sprite = spriteStraight;
 
       endPoint = new Vector2(0, 2);
       endRotation = 0;
@@ -171,13 +269,13 @@ public class Track : MonoBehaviour
   public bool IsTurn()
   {
     return (type == Track.TrackType.Right || type == Track.TrackType.Left ||
-      (type == Track.TrackType.SplitRight || type == Track.TrackType.SplitLeft) && GetMode() == Track.TrackSplitMode.Turn);
+      (type == Track.TrackType.SplitRight || type == Track.TrackType.SplitLeft) && GetMode() == Track.TrackMode.Turn);
   }
 
   public bool IsStraight()
   {
     return (type == Track.TrackType.Straight || (type == Track.TrackType.SplitRight || type == Track.TrackType.SplitLeft)
-      && GetMode() == Track.TrackSplitMode.Straight);
+      && GetMode() == Track.TrackMode.Straight || type == Track.TrackType.DriftRight || type == Track.TrackType.DriftLeft);
   }
 
   public bool IsStation()
