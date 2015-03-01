@@ -4,7 +4,7 @@ using System.Collections;
 public class GameLogic : MonoBehaviour
 {
 
-  public Track[,] map = new Track[20, 20];
+  public Track[,] map = new Track[30, 30];
   public Camera c;
 
   public GameObject straightTrack;
@@ -20,7 +20,8 @@ public class GameLogic : MonoBehaviour
   public GameObject wheels;
   public GameObject train;
 
-
+  private Vector2 startDrag;
+  bool isDragging;
   private GameObject currentlySelected;
   private int turnbabyturn;
   private GameObject previewtrack;
@@ -32,6 +33,7 @@ public class GameLogic : MonoBehaviour
     {
       map[(int)g.transform.position.x, (int)g.transform.position.y] = g.GetComponent<Track>();
     }
+    isDragging = false;
   }
 
   // Update is called once per frame
@@ -106,6 +108,12 @@ public class GameLogic : MonoBehaviour
       turnbabyturn -= 90;
       GeneratePreview(le_x, le_y);
     }
+    
+    if (Input.GetButton("DRAG"))
+    {
+      c.transform.position += new Vector3(-Input.GetAxisRaw("Mouse X") * Time.deltaTime * 2, Input.GetAxisRaw("Mouse Y") * Time.deltaTime * 2, 0);
+      c.transform.position = new Vector3(Mathf.Clamp(c.transform.position.x, 11, 19), Mathf.Clamp(c.transform.position.y, 7, 23), -10);
+    }
 
     if (previewtrack)
     {
@@ -117,8 +125,11 @@ public class GameLogic : MonoBehaviour
     {
       if (currentlySelected != null)
       {
-        GameObject newtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.Euler(new Vector3(0, 0, turnbabyturn))) as GameObject;
-        map[le_x, le_y] = newtrack.GetComponent<Track>();
+        if (!map[le_x, le_y])
+        {
+          GameObject newtrack = Instantiate(currentlySelected, new Vector3(le_x, le_y, 0), Quaternion.Euler(new Vector3(0, 0, turnbabyturn))) as GameObject;
+          map[le_x, le_y] = newtrack.GetComponent<Track>();
+        }
       }
       else if (le_x >= 0 && le_y >= 0)
       {
