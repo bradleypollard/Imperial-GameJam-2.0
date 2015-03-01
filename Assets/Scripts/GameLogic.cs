@@ -108,6 +108,11 @@ public class GameLogic : MonoBehaviour
       turnbabyturn -= 90;
       GeneratePreview(le_x, le_y);
     }
+
+    if (Input.GetButtonDown("RESET"))
+    {
+      Application.LoadLevel(0);
+    }
     
     if (Input.GetButton("DRAG"))
     {
